@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的小站 - Outdown Style</title>
+    <!-- 引入 FontAwesome 图标库 (用于侧边栏和搜索图标) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ================= 全局变量与基础设置 ================= */
+        :root {
+            --bg-color: #fdf8f5; /* 背景色：淡淡的暖粉色 */
+            --text-main: #333;
+            --text-muted: #888;
+            --sidebar-bg: transparent;
+            --card-bg: #ffffff;
+            --accent-color: #e8a8a8; /* 主题粉色 */
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        /* 暗黑模式变量 */
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-main: #e0e0e0;
+            --text-muted: #999;
+            --card-bg: #2a2a2a;
+            --accent-color: #d17a7a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: background-color 0.4s ease, color 0.4s ease;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* ================= 页面布局 (三栏) ================= */
+        .layout {
+            display: flex;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* ================= 左侧边栏 ================= */
+        .sidebar-left {
+            width: 200px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .avatar-box {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px dashed var(--accent-color);
+            padding: 5px;
+            margin-bottom: 15px;
+            transition: var(--transition);
+        }
+        .avatar-box:hover { transform: rotate(10deg) scale(1.05); }
+        .avatar-box img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+
+        .site-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
+        .site-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 40px; text-align: center; }
+
+        .nav-menu { width: 100%; }
+        .nav-menu a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 20px;
+            color: var(--text-muted);
+            border-radius: 8px;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+        .nav-menu a:hover, .nav-menu a.active {
+            color: var(--accent-color);
+            background-color: rgba(232, 168, 168, 0.1);
+        }
+        .nav-menu i { width: 20px; text-align: center; }
+
+        /* 暗黑模式按钮 */
+        .theme-toggle {
+            margin-top: auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            padding: 20px;
+            transition: var(--transition);
+        }
+        .theme-toggle:hover { color: var(--accent-color); }
+
+        /* ================= 中间内容区 ================= */
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-top: 40px;
+        }
+
+        /* 顶部横幅 */
+        .banner {
+            background: linear-gradient(135deg, rgba(232, 168, 168, 0.2), rgba(232, 168, 168, 0.05));
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            color: var(--text-main);
+            border: 1px solid rgba(232, 168, 168, 0.3);
+        }
+        .banner h2 { font-weight: normal; margin-bottom: 5px; }
+        .banner p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* 文章卡片 */
+        .article-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+        .article-card:hover .article-title { color: var(--accent-color); }
+        .article-excerpt {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .article-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px dashed #eee;
+            padding-top: 15px;
+        }
+
+        /* ================= 右侧边栏 ================= */
+        .sidebar-right {
+            width: 280px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-top: 40px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .widget {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .widget-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .widget-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        /* 搜索框 */
+        .search-box {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            padding: 5px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        /* 侧边栏列表 */
+        .widget ul li { margin-bottom: 12px; }
+        .widget ul a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+        }
+        .widget ul a:hover { color: var(--accent-color); padding-left: 5px;}
+
+        /* 标签云 */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag {
+            padding: 4px 10px;
+            background: var(--bg-color);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .tag:hover {
+            background: var(--accent-color);
+            color: white;
+        }
+
+        /* ================= 响应式设计 (手机端) ================= */
+        @media (max-width: 1024px) {
+            .sidebar-right { display: none; } /* 中屏隐藏右栏 */
+        }
+        @media (max-width: 768px) {
+            .layout { flex-direction: column; padding: 10px; gap: 10px; }
+            .sidebar-left { 
+                width: 100%; height: auto; position: relative; flex-direction: row; 
+                justify-content: space-between; padding: 10px; align-items: center;
+            }
+            .avatar-box { width: 50px; height: 50px; margin-bottom: 0; }
+            .site-desc, .theme-toggle span { display: none; }
+            .nav-menu { display: none; } /* 手机端隐藏导航，真实项目需做汉堡菜单 */
+            .main-content { padding-top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="layout">
+        <!-- ================= 左侧边栏 ================= -->
+        <aside class="sidebar-left">
+            <div class="avatar-box">
+                <!-- 这里的图片链接可以换成你自己的头像 -->
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Christine" alt="Avatar">
+            </div>
+            <div class="site-name">Christine</div>
+            <div class="site-desc">白日依山尽，黄河入海流。</div>
+
+            <nav class="nav-menu">
+                <a href="#" class="active"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="#"><i class="fa-solid fa-pen-to-square"></i> Moments</a>
+                <a href="#"><i class="fa-solid fa-box-archive"></i> Archives</a>
+                <a href="#"><i class="fa-solid fa-user"></i> About</a>
+                <a href="#"><i class="fa-solid fa-link"></i> Links</a>
+            </nav>
+
+            <!-- 交互：暗黑模式切换 -->
+            <div class="theme-toggle" id="themeBtn">
+                <i class="fa-solid fa-tree" id="themeIcon"></i>
+                <span id="themeText">暗色模式</span>
+            </div>
+        </aside>
+
+        <!-- ================= 中间内容区 ================= -->
+        <main class="main-content">
+            <!-- 顶部横幅 -->
+            <div class="banner">
+                <h2>欢迎来到我的小站</h2>
+                <p>Spring · 樱花盛开</p>
+            </div>
+
+            <!-- 文章列表容器 (用于搜索过滤) -->
+            <div id="articleList">
+                <!-- 文章卡片 1 -->
+                <article class="article-card">
+                    <h3 class="article-title">OutdownBlog 视觉重构记录</h3>
+                    <p class="article-excerpt">从 Stack 主题的默认样子到藕粉手绘风，记录这一年里三个阶段的改造：换了什么、为什么换、踩了哪些坑。</p>
+                    <div class="article-meta">
+                        <span><i class="fa-regular fa-calendar"></i> Sep 16, 2026</span>
+                        <span><i class="fa-regular fa-clock"></i> 14 分钟</span>
+                        <span>6918 字</span>
+                    </div>
+                </article>
+
+                <!-- 文章卡片 2 -->
+                <article class="article-card" style="margin-top: 20px;">
+                    <h3 class="article-title">给博客配一个会写文章的 Skill</h3>
+                    <p class="article-excerpt">把写作风格、格式规范和踩过的坑沉淀成一个项目级 Skill，让 AI 按我的方式给博客写文章。</p>
+                    <div class="article-meta">
+                        <span><i class="fa-regular fa-calendar"></i> Sep 16, 2026</span>
+                        <span><i class="fa-regular fa-clock"></i> 4 分钟</span>
+                        <span>1799 字</span>
+                    </div>
+                </article>
+
+                <!-- 文章卡片 3 -->
+                <article class="article-card" style="margin-top: 20px;">
+                    <h3 class="article-title">斯坦福CS146S：现代软件开发者Week9学习笔记</h3>
+                    <p class="article-excerpt">Week9：部署后运维。记录学习过程中的核心知识点与踩坑经验。</p>
+                    <div class="article-meta">
+                        <span><i class="fa-regular fa-calendar"></i> Jun 10, 2026</span>
+                        <span><i class="fa-regular fa-clock"></i> 4 分钟</span>
+                        <span>1562 字</span>
+                    </div>
+                </article>
+            </div>
+        </main>
+
+        <!-- ================= 右侧边栏 ================= -->
+        <aside class="sidebar-right">
+            <!-- 搜索组件 -->
+            <div class="widget">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="输入关键词...">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #888;"></i>
+                </div>
+            </div>
+
+            <!-- 随机文章 -->
+            <div class="widget">
+                <div class="widget-title">随机文章</div>
+                <ul>
+                    <li><a href="#">OS1：知识点梳理</a></li>
+                    <li><a href="#">mysql必知必会</a></li>
+                    <li><a href="#">浅谈原神</a></li>
+                </ul>
+            </div>
+
+            <!-- 标签分类 -->
+            <div class="widget">
+                <div class="widget-title">分类</div>
+                <div class="tags-container">
+                    <span class="tag">C++ <small>19</small></span>
+                    <span class="tag">AI <small>16</small></span>
+                    <span class="tag">Blog <small>12</small></span>
+                    <span class="tag">Cs146s <small>9</small></span>
+                    <span class="tag">Go <small>5</small></span>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- ================= JavaScript 交互逻辑 ================= -->
+    <script>
+        // 1. 暗黑模式切换交互
+        const themeBtn = document.getElementById('themeBtn');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+        const htmlElement = document.documentElement;
+
+        themeBtn.addEventListener('click', () => {
+            if (htmlElement.getAttribute('data-theme') === 'dark') {
+                htmlElement.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-tree';
+                themeText.innerText = '暗色模式';
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fa-solid fa-moon';
+                themeText.innerText = '亮色模式';
+            }
+        });
+
+        // 2. 实时搜索过滤交互
+        const searchInput = document.getElementById('searchInput');
+        const articleCards = document.querySelectorAll('.article-card');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchText = e.target.value.toLowerCase();
+
+            articleCards.forEach(card => {
+                // 获取标题和摘要的文本内容
+                const title = card.querySelector('.article-title').innerText.toLowerCase();
+                const excerpt = card.querySelector('.article-excerpt').innerText.toLowerCase();
+                
+                // 如果包含搜索词，则显示；否则隐藏
+                if (title.includes(searchText) || excerpt.includes(searchText)) {
+                    card.style.display = 'block';
+                    // 加一点淡入动画
+                    card.style.animation = 'fadeIn 0.4s ease forwards';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // 添加一个淡入动画关键帧 (给 JS 动态调用)
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

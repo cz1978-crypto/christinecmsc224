@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christine - Reading</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 样式与上面完全相同，为了节省空间这里省略，复制上面的 style 部分即可 */
+        :root { --bg-color: #fdf8f5; --text-main: #333; --text-muted: #888; --card-bg: #ffffff; --accent-color: #e8a8a8; --border-radius: 12px; --transition: all 0.3s ease; }
+        [data-theme="dark"] { --bg-color: #1a1a1a; --text-main: #e0e0e0; --text-muted: #999; --card-bg: #2a2a2a; --accent-color: #d17a7a; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background-color: var(--bg-color); color: var(--text-main); transition: background-color 0.4s ease, color 0.4s ease; display: flex; min-height: 100vh; }
+        a { text-decoration: none; color: inherit; } ul { list-style: none; }
+        .layout { display: flex; width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px; gap: 30px; }
+        .sidebar-left { width: 200px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; padding-top: 40px; position: sticky; top: 0; height: 100vh; }
+        .avatar-box { width: 120px; height: 120px; border-radius: 50%; border: 3px dashed var(--accent-color); padding: 5px; margin-bottom: 15px; transition: var(--transition); }
+        .avatar-box:hover { transform: rotate(10deg) scale(1.05); } .avatar-box img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .site-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; } .site-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 40px; text-align: center; }
+        .nav-menu { width: 100%; } .nav-menu a { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: var(--text-muted); border-radius: 8px; transition: var(--transition); font-size: 0.95rem; }
+        .nav-menu a:hover, .nav-menu a.active { color: var(--accent-color); background-color: rgba(232, 168, 168, 0.1); } .nav-menu i { width: 20px; text-align: center; }
+        .theme-toggle { margin-top: auto; cursor: pointer; display: flex; align-items: center; gap: 10px; color: var(--text-muted); padding: 20px; transition: var(--transition); }
+        .main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding-top: 40px; }
+        .banner { background: linear-gradient(135deg, rgba(232, 168, 168, 0.2), rgba(232, 168, 168, 0.05)); border-radius: var(--border-radius); padding: 30px; text-align: center; color: var(--text-main); border: 1px solid rgba(232, 168, 168, 0.3); }
+        .article-card { background: var(--card-bg); border-radius: var(--border-radius); padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: var(--transition); cursor: pointer; }
+        .article-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
+        .article-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; transition: var(--transition); }
+        .article-excerpt { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; line-height: 1.6; }
+        @media (max-width: 768px) { .layout { flex-direction: column; padding: 10px; gap: 10px; } .sidebar-left { width: 100%; height: auto; position: relative; flex-direction: row; justify-content: space-between; padding: 10px; align-items: center; } .avatar-box { width: 50px; height: 50px; margin-bottom: 0; } .site-desc, .theme-toggle span { display: none; } .nav-menu { display: none; } .main-content { padding-top: 0; } }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar-left">
+            <div class="avatar-box"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Christine" alt="Avatar"></div>
+            <div class="site-name">Christine</div><div class="site-desc">Bard College '26</div>
+            <nav class="nav-menu">
+                <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="theme.html"><i class="fa-solid fa-lightbulb"></i> Theme</a>
+                <a href="reading.html" class="active"><i class="fa-solid fa-book-open"></i> Reading</a>
+                <a href="movies.html"><i class="fa-solid fa-film"></i> Movies</a>
+                <a href="links.html"><i class="fa-solid fa-user"></i> About</a>
+            </nav>
+            <div class="theme-toggle" id="themeBtn"><i class="fa-solid fa-tree" id="themeIcon"></i><span id="themeText">暗色模式</span></div>
+        </aside>
+
+        <main class="main-content">
+            <div class="banner">
+                <h2>Reading List</h2>
+                <p>Articles I have read for CMSC 224</p>
+            </div>
+
+            <article class="article-card">
+                <h3 class="article-title">Week 5: Prison/Jail-Issued Tablets</h3>
+                <p class="article-excerpt">My reflection on how tablets are used as tools for surveillance and profit rather than education.</p>
+                <a href="https://www.prisonpolicy.org/" target="_blank" style="color: var(--accent-color); font-weight: bold;">Read the Article ↗</a>
+            </article>
+
+            <article class="article-card" style="margin-top: 20px;">
+                <h3 class="article-title">Week 7: Privacy & Surveillance</h3>
+                <p class="article-excerpt">Analyzing how constant digital monitoring impacts the mental health of incarcerated individuals.</p>
+                <a href="你的文章链接" target="_blank" style="color: var(--accent-color); font-weight: bold;">Read the Article ↗</a>
+            </article>
+        </main>
+    </div>
+    <script>
+        const themeBtn = document.getElementById('themeBtn'); const themeIcon = document.getElementById('themeIcon'); const themeText = document.getElementById('themeText'); const htmlElement = document.documentElement;
+        themeBtn.addEventListener('click', () => {
+            if (htmlElement.getAttribute('data-theme') === 'dark') { htmlElement.removeAttribute('data-theme'); themeIcon.className = 'fa-solid fa-tree'; themeText.innerText = '暗色模式'; } 
+            else { htmlElement.setAttribute('data-theme', 'dark'); themeIcon.className = 'fa-solid fa-moon'; themeText.innerText = '亮色模式'; }
+        });
+    </script>
+</body>
+</html>

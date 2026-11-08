@@ -6,7 +6,6 @@
     <title>Christine - Movies</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 为了节省篇幅，这里的样式与 index.html 完全一样，请直接复制 index.html 的 style 部分贴在这里 */
         :root { --bg-color: #fdf8f5; --text-main: #333; --text-muted: #888; --card-bg: #ffffff; --accent-color: #e8a8a8; --border-radius: 12px; --transition: all 0.3s ease; }
         [data-theme="dark"] { --bg-color: #1a1a1a; --text-main: #e0e0e0; --text-muted: #999; --card-bg: #2a2a2a; --accent-color: #d17a7a; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -20,12 +19,16 @@
         .nav-menu { width: 100%; } .nav-menu a { display: flex; align-items: center; gap: 15px; padding: 12px 20px; color: var(--text-muted); border-radius: 8px; transition: var(--transition); font-size: 0.95rem; }
         .nav-menu a:hover, .nav-menu a.active { color: var(--accent-color); background-color: rgba(232, 168, 168, 0.1); } .nav-menu i { width: 20px; text-align: center; }
         .theme-toggle { margin-top: auto; cursor: pointer; display: flex; align-items: center; gap: 10px; color: var(--text-muted); padding: 20px; transition: var(--transition); }
+        .theme-toggle:hover { color: var(--accent-color); }
         .main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding-top: 40px; }
         .banner { background: linear-gradient(135deg, rgba(232, 168, 168, 0.2), rgba(232, 168, 168, 0.05)); border-radius: var(--border-radius); padding: 30px; text-align: center; color: var(--text-main); border: 1px solid rgba(232, 168, 168, 0.3); }
+        .banner h2 { font-weight: normal; margin-bottom: 5px; } .banner p { color: var(--text-muted); font-size: 0.9rem; }
         .article-card { background: var(--card-bg); border-radius: var(--border-radius); padding: 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.02); transition: var(--transition); cursor: pointer; }
         .article-card:hover { transform: translateY(-5px); box-shadow: 0 8px 25px rgba(0,0,0,0.08); }
         .article-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; transition: var(--transition); }
+        .article-card:hover .article-title { color: var(--accent-color); }
         .article-excerpt { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; line-height: 1.6; }
+        .article-meta { display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-muted); border-top: 1px dashed #eee; padding-top: 15px; }
         @media (max-width: 768px) { .layout { flex-direction: column; padding: 10px; gap: 10px; } .sidebar-left { width: 100%; height: auto; position: relative; flex-direction: row; justify-content: space-between; padding: 10px; align-items: center; } .avatar-box { width: 50px; height: 50px; margin-bottom: 0; } .site-desc, .theme-toggle span { display: none; } .nav-menu { display: none; } .main-content { padding-top: 0; } }
     </style>
 </head>
@@ -33,7 +36,8 @@
     <div class="layout">
         <aside class="sidebar-left">
             <div class="avatar-box"><img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Christine" alt="Avatar"></div>
-            <div class="site-name">Christine</div><div class="site-desc">Bard College '26</div>
+            <div class="site-name">Christine</div>
+            <div class="site-desc">Bard College '26</div>
             <nav class="nav-menu">
                 <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
                 <a href="theme.html"><i class="fa-solid fa-lightbulb"></i> Theme</a>
@@ -51,12 +55,23 @@
             </div>
 
             <article class="article-card">
-                <h3 class="article-title">The Prison in Twelve Landscapes (2016)</h3>
-                <p class="article-excerpt">My analysis of this documentary and how it shows the hidden economic impacts of the prison system outside prison walls.</p>
-                <a href="https://www.imdb.com/title/tt5569092/" target="_blank" style="color: var(--accent-color); font-weight: bold;">View on IMDb ↗</a>
+                <h3 class="article-title">The 13th (2016) - Week 1</h3>
+                <p class="article-excerpt">
+                    This documentary fundamentally changed how I view the U.S. criminal justice system. It exposed how the 13th Amendment's exception clause ("neither slavery nor involuntary servitude, except as a punishment for crime") led directly to mass incarceration and the modern prison industrial complex. It connects heavily to our early course discussions on systemic racism in technology and policing.
+                </p>
+                <a href="https://www.imdb.com/title/tt5895028/" target="_blank" style="color: var(--accent-color); font-weight: bold;">View on IMDb ↗</a>
+            </article>
+
+            <article class="article-card" style="margin-top: 20px;">
+                <h3 class="article-title">The Alabama Solution (2024) - Week 3</h3>
+                <p class="article-excerpt">
+                    This film provided a chilling look into the exploitation of prison labor. By documenting the conditions inside Alabama's prisons, it perfectly illustrated the "Prison Industrial Complex" concepts we discussed. It made me think deeply about how profit motives dictate the treatment of incarcerated individuals, and how technology companies might further exploit this cheap labor.
+                </p>
+                <a href="https://www.imdb.com/title/tt31511727/" target="_blank" style="color: var(--accent-color); font-weight: bold;">View on IMDb ↗</a>
             </article>
         </main>
     </div>
+
     <script>
         const themeBtn = document.getElementById('themeBtn'); const themeIcon = document.getElementById('themeIcon'); const themeText = document.getElementById('themeText'); const htmlElement = document.documentElement;
         themeBtn.addEventListener('click', () => {

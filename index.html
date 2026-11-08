@@ -3,128 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Christine - Portfolio</title>
+    <title>我的小站 - Outdown Style</title>
+    <!-- 引入 FontAwesome 图标库 (用于侧边栏和搜索图标) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ================= 初号机配色 (深紫+绿) ================= */
+        /* ================= 全局变量与基础设置 ================= */
         :root {
-            --bg-color: #1A0B2E; /* 极深紫背景 */
-            --text-main: #E0E0E0; /* 灰白文字 */
-            --text-muted: #9E9E9E;
-            --card-bg: #2D1B4E; /* 卡片深紫 */
-            --accent-color: #39FF14; /* 荧光绿 */
+            --bg-color: #fdf8f5; /* 背景色：淡淡的暖粉色 */
+            --text-main: #333;
+            --text-muted: #888;
+            --sidebar-bg: transparent;
+            --card-bg: #ffffff;
+            --accent-color: #e8a8a8; /* 主题粉色 */
             --border-radius: 12px;
             --transition: all 0.3s ease;
         }
 
-        /* 亮色模式 (点击左下角切换) */
-        [data-theme="light"] {
-            --bg-color: #fdf8f5;
-            --text-main: #333;
-            --text-muted: #888;
-            --card-bg: #ffffff;
-            --accent-color: #7b2cbf; /* 亮色下用紫 */
+        /* 暗黑模式变量 */
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-main: #e0e0e0;
+            --text-muted: #999;
+            --card-bg: #2a2a2a;
+            --accent-color: #d17a7a;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             transition: background-color 0.4s ease, color 0.4s ease;
-            display: flex; min-height: 100vh;
+            display: flex;
+            min-height: 100vh;
         }
+
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
-        .layout { display: flex; width: 100%; max-width: 1400px; margin: 0 auto; padding: 20px; gap: 30px; }
+        /* ================= 页面布局 (三栏) ================= */
+        .layout {
+            display: flex;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
 
         /* ================= 左侧边栏 ================= */
         .sidebar-left {
-            width: 200px; flex-shrink: 0; display: flex; flex-direction: column;
-            align-items: center; padding-top: 40px; position: sticky; top: 0; height: 100vh;
+            width: 200px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 40px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
         }
-        
-        /* 乌萨奇头像框特效 */
+
         .avatar-box {
-            width: 120px; height: 120px; border-radius: 50%;
-            border: 3px dashed var(--accent-color); padding: 5px;
-            margin-bottom: 15px; transition: var(--transition);
-            box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
-            background-color: #fff; /* 确保乌萨奇底色是白的 */
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 3px dashed var(--accent-color);
+            padding: 5px;
+            margin-bottom: 15px;
+            transition: var(--transition);
         }
-        .avatar-box:hover { transform: rotate(10deg) scale(1.05); box-shadow: 0 0 25px rgba(57, 255, 20, 0.6); }
+        .avatar-box:hover { transform: rotate(10deg) scale(1.05); }
         .avatar-box img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
 
-        .site-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; color: var(--accent-color); }
+        .site-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
         .site-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 40px; text-align: center; }
 
         .nav-menu { width: 100%; }
         .nav-menu a {
-            display: flex; align-items: center; gap: 15px; padding: 12px 20px;
-            color: var(--text-muted); border-radius: 8px; transition: var(--transition); font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px 20px;
+            color: var(--text-muted);
+            border-radius: 8px;
+            transition: var(--transition);
+            font-size: 0.95rem;
         }
         .nav-menu a:hover, .nav-menu a.active {
-            color: var(--accent-color); background-color: rgba(57, 255, 20, 0.1); border-left: 4px solid var(--accent-color);
+            color: var(--accent-color);
+            background-color: rgba(232, 168, 168, 0.1);
         }
         .nav-menu i { width: 20px; text-align: center; }
 
+        /* 暗黑模式按钮 */
         .theme-toggle {
-            margin-top: auto; cursor: pointer; display: flex; align-items: center; gap: 10px;
-            color: var(--text-muted); padding: 20px; transition: var(--transition);
+            margin-top: auto;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-muted);
+            padding: 20px;
+            transition: var(--transition);
         }
         .theme-toggle:hover { color: var(--accent-color); }
 
         /* ================= 中间内容区 ================= */
-        .main-content { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 20px; padding-top: 40px; }
-
-        .banner {
-            background: linear-gradient(135deg, rgba(57, 255, 20, 0.15), rgba(45, 27, 78, 0.8));
-            border-radius: var(--border-radius); padding: 30px; text-align: center;
-            color: var(--text-main); border: 1px solid rgba(57, 255, 20, 0.3);
+        .main-content {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-top: 40px;
         }
-        .banner h2 { font-weight: normal; margin-bottom: 5px; color: var(--accent-color); }
+
+        /* 顶部横幅 */
+        .banner {
+            background: linear-gradient(135deg, rgba(232, 168, 168, 0.2), rgba(232, 168, 168, 0.05));
+            border-radius: var(--border-radius);
+            padding: 30px;
+            text-align: center;
+            color: var(--text-main);
+            border: 1px solid rgba(232, 168, 168, 0.3);
+        }
+        .banner h2 { font-weight: normal; margin-bottom: 5px; }
         .banner p { color: var(--text-muted); font-size: 0.9rem; }
 
+        /* 文章卡片 */
         .article-card {
-            background: var(--card-bg); border-radius: var(--border-radius); padding: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: var(--transition);
-            cursor: pointer; border: 1px solid transparent;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: var(--transition);
+            cursor: pointer;
         }
         .article-card:hover {
-            transform: translateY(-5px); box-shadow: 0 8px 25px rgba(57, 255, 20, 0.15); border: 1px solid rgba(57, 255, 20, 0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
-        .article-title { font-size: 1.3rem; font-weight: bold; margin-bottom: 10px; transition: var(--transition); }
+        .article-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
         .article-card:hover .article-title { color: var(--accent-color); }
-        .article-excerpt { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; line-height: 1.6; }
-        .article-meta { display: flex; gap: 15px; font-size: 0.85rem; color: var(--text-muted); border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 15px; }
+        .article-excerpt {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .article-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-top: 1px dashed #eee;
+            padding-top: 15px;
+        }
 
         /* ================= 右侧边栏 ================= */
-        .sidebar-right { width: 280px; flex-shrink: 0; display: flex; flex-direction: column; gap: 20px; padding-top: 40px; position: sticky; top: 0; height: 100vh; }
-        .widget { background: var(--card-bg); border-radius: var(--border-radius); padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .widget-title { font-size: 1rem; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; color: var(--accent-color); }
-        .widget-title::before { content: ''; display: inline-block; width: 4px; height: 16px; background-color: var(--accent-color); border-radius: 2px; }
+        .sidebar-right {
+            width: 280px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-top: 40px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
 
-        .search-box { display: flex; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 5px; margin-bottom: 10px; }
-        .search-box input { border: none; background: transparent; outline: none; width: 100%; padding: 5px; color: var(--text-main); font-size: 0.9rem; }
-        .search-box input::placeholder { color: var(--text-muted); }
+        .widget {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+        .widget-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .widget-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 16px;
+            background-color: var(--accent-color);
+            border-radius: 2px;
+        }
 
+        /* 搜索框 */
+        .search-box {
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        .search-box input {
+            border: none;
+            background: transparent;
+            outline: none;
+            width: 100%;
+            padding: 5px;
+            color: var(--text-main);
+            font-size: 0.9rem;
+        }
+
+        /* 侧边栏列表 */
         .widget ul li { margin-bottom: 12px; }
-        .widget ul a { color: var(--text-muted); font-size: 0.9rem; transition: var(--transition); display: flex; justify-content: space-between; }
+        .widget ul a {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+        }
         .widget ul a:hover { color: var(--accent-color); padding-left: 5px;}
 
-        .tags-container { display: flex; flex-wrap: wrap; gap: 8px; }
-        .tag { padding: 4px 10px; background: rgba(255,255,255,0.05); border-radius: 12px; font-size: 0.8rem; color: var(--text-muted); transition: var(--transition); cursor: pointer; }
-        .tag:hover { background: var(--accent-color); color: #1A0B2E; font-weight: bold; }
+        /* 标签云 */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .tag {
+            padding: 4px 10px;
+            background: var(--bg-color);
+            border-radius: 12px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .tag:hover {
+            background: var(--accent-color);
+            color: white;
+        }
 
-        /* ================= 手机端适配 ================= */
-        @media (max-width: 1024px) { .sidebar-right { display: none; } }
+        /* ================= 响应式设计 (手机端) ================= */
+        @media (max-width: 1024px) {
+            .sidebar-right { display: none; } /* 中屏隐藏右栏 */
+        }
         @media (max-width: 768px) {
             .layout { flex-direction: column; padding: 10px; gap: 10px; }
-            .sidebar-left { width: 100%; height: auto; position: relative; flex-direction: row; justify-content: space-between; padding: 10px; align-items: center; }
+            .sidebar-left { 
+                width: 100%; height: auto; position: relative; flex-direction: row; 
+                justify-content: space-between; padding: 10px; align-items: center;
+            }
             .avatar-box { width: 50px; height: 50px; margin-bottom: 0; }
             .site-desc, .theme-toggle span { display: none; }
-            .nav-menu { display: none; }
+            .nav-menu { display: none; } /* 手机端隐藏导航，真实项目需做汉堡菜单 */
             .main-content { padding-top: 0; }
         }
     </style>
@@ -135,11 +279,11 @@
         <!-- ================= 左侧边栏 ================= -->
         <aside class="sidebar-left">
             <div class="avatar-box">
-                <!-- 乌萨奇 Base64 头像已内置，无需上传图片 -->
-                <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjcmlwdGlvbgAAAAAAAHZpdm9tAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAEsASwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD3+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD//Z" alt="Usagi">
+                <!-- 这里的图片链接可以换成你自己的头像 -->
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=Christine" alt="Avatar">
             </div>
             <div class="site-name">Christine</div>
-            <div class="site-desc">Bard College '31</div>
+            <div class="site-desc">白日依山尽，黄河入海流。</div>
 
             <nav class="nav-menu">
             <a href="index.html" class="active"><i class="fa-solid fa-house"></i> Home</a>
@@ -149,27 +293,30 @@
             <a href="links.html"><i class="fa-solid fa-user"></i> About</a>
             </nav>
 
-            <!-- 交互：亮/暗色切换 -->
+            <!-- 交互：暗黑模式切换 -->
             <div class="theme-toggle" id="themeBtn">
-                <i class="fa-solid fa-moon" id="themeIcon"></i>
-                <span id="themeText">亮色模式</span>
+                <i class="fa-solid fa-tree" id="themeIcon"></i>
+                <span id="themeText">暗色模式</span>
             </div>
         </aside>
 
         <!-- ================= 中间内容区 ================= -->
+                <!-- ================= 中间内容区 ================= -->
         <main class="main-content">
+            <!-- 顶部横幅 -->
             <div class="banner">
                 <h2>Welcome to My Portfolio</h2>
                 <p>CMSC 224: Computing and Incarceration</p>
             </div>
 
+            <!-- 个人简介卡片 -->
             <article class="article-card">
                 <h3 class="article-title">Hi, I'm Christine!</h3>
                 <p class="article-excerpt">
-                    I am an undergraduate student at Bard College ('31). This website is my final project for CMSC 224. 
+                    I am an undergraduate student at Bard College. This website is my final project for CMSC 224. 
                     Here, I explore the complex relationship between computing and the carceral system.
                 </p>
-                <p class="article-excerpt" style="font-size: 0.85rem; color: var(--text-muted);">
+                <p class="article-excerpt" style="font-size: 0.85rem; color: #888;">
                     *GenAI Disclaimer: All written content is my own. I used AI for coding assistance and layout debugging.
                 </p>
             </article>
@@ -182,29 +329,33 @@
 
         <!-- ================= 右侧边栏 ================= -->
         <aside class="sidebar-right">
+            <!-- 搜索组件 -->
             <div class="widget">
                 <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Search...">
-                    <i class="fa-solid fa-magnifying-glass" style="color: var(--accent-color);"></i>
+                    <input type="text" id="searchInput" placeholder="输入关键词...">
+                    <i class="fa-solid fa-magnifying-glass" style="color: #888;"></i>
                 </div>
             </div>
 
+            <!-- 随机文章 -->
             <div class="widget">
-                <div class="widget-title">Related Topics</div>
+                <div class="widget-title">随机文章</div>
                 <ul>
-                    <li><a href="#">Digital Divide</a></li>
-                    <li><a href="#">Surveillance Tech</a></li>
-                    <li><a href="#">Prison Labor</a></li>
+                    <li><a href="#">OS1：知识点梳理</a></li>
+                    <li><a href="#">mysql必知必会</a></li>
+                    <li><a href="#">浅谈原神</a></li>
                 </ul>
             </div>
 
+            <!-- 标签分类 -->
             <div class="widget">
-                <div class="widget-title">Tags</div>
+                <div class="widget-title">分类</div>
                 <div class="tags-container">
-                    <span class="tag">HCI</span>
-                    <span class="tag">Ethics</span>
-                    <span class="tag">Policing</span>
-                    <span class="tag">Reentry</span>
+                    <span class="tag">C++ <small>19</small></span>
+                    <span class="tag">AI <small>16</small></span>
+                    <span class="tag">Blog <small>12</small></span>
+                    <span class="tag">Cs146s <small>9</small></span>
+                    <span class="tag">Go <small>5</small></span>
                 </div>
             </div>
         </aside>
@@ -212,35 +363,40 @@
 
     <!-- ================= JavaScript 交互逻辑 ================= -->
     <script>
-        // 1. 初号机模式 / 亮色模式切换
+        // 1. 暗黑模式切换交互
         const themeBtn = document.getElementById('themeBtn');
         const themeIcon = document.getElementById('themeIcon');
         const themeText = document.getElementById('themeText');
         const htmlElement = document.documentElement;
 
         themeBtn.addEventListener('click', () => {
-            if (htmlElement.getAttribute('data-theme') === 'light') {
+            if (htmlElement.getAttribute('data-theme') === 'dark') {
                 htmlElement.removeAttribute('data-theme');
+                themeIcon.className = 'fa-solid fa-tree';
+                themeText.innerText = '暗色模式';
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
                 themeIcon.className = 'fa-solid fa-moon';
                 themeText.innerText = '亮色模式';
-            } else {
-                htmlElement.setAttribute('data-theme', 'light');
-                themeIcon.className = 'fa-solid fa-sun';
-                themeText.innerText = '初号机模式';
             }
         });
 
-        // 2. 实时搜索过滤
+        // 2. 实时搜索过滤交互
         const searchInput = document.getElementById('searchInput');
         const articleCards = document.querySelectorAll('.article-card');
 
         searchInput.addEventListener('input', (e) => {
             const searchText = e.target.value.toLowerCase();
+
             articleCards.forEach(card => {
+                // 获取标题和摘要的文本内容
                 const title = card.querySelector('.article-title').innerText.toLowerCase();
                 const excerpt = card.querySelector('.article-excerpt').innerText.toLowerCase();
+                
+                // 如果包含搜索词，则显示；否则隐藏
                 if (title.includes(searchText) || excerpt.includes(searchText)) {
                     card.style.display = 'block';
+                    // 加一点淡入动画
                     card.style.animation = 'fadeIn 0.4s ease forwards';
                 } else {
                     card.style.display = 'none';
@@ -248,8 +404,14 @@
             });
         });
 
+        // 添加一个淡入动画关键帧 (给 JS 动态调用)
         const style = document.createElement('style');
-        style.innerHTML = `@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }`;
+        style.innerHTML = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+        `;
         document.head.appendChild(style);
     </script>
 </body>
